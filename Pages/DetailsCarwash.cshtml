@@ -1,0 +1,25 @@
+﻿@page "{id:int}"
+@model WashOverflowV2.Pages.DetailsCarwashModel
+
+@{
+    ViewData["Title"] = "Station Details";
+}
+
+<h2>@Model.Station.Name</h2>
+<p>@Model.Station.Address</p>
+
+<h3>Packages</h3>
+<ul>
+    @foreach (var package in Model.Station.Packages)
+    {
+        <li>
+            <strong>@package.Name</strong> - @package.Price kr
+            <ul>
+                @foreach (var feature in package.PackageFeatures.Select(pf => pf.Feature))
+                {
+                    <li>@feature.Name</li>
+                }
+            </ul>
+        </li>
+    }
+</ul>

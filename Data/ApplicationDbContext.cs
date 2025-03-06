@@ -4,12 +4,12 @@ using WashOverflowV2.Models;
 
 namespace WashOverflowV2.Data
 {
-	public class ApplicationDbContext : IdentityDbContext
-	{
-		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-			: base(options)
-		{
-		}
+    public class ApplicationDbContext : IdentityDbContext
+    {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options)
+        {
+        }
 
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<Station> Stations { get; set; }
@@ -19,7 +19,7 @@ namespace WashOverflowV2.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder); 
+            base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<PackageFeature>()
                 .HasKey(pf => new { pf.PackageId, pf.FeatureId });
