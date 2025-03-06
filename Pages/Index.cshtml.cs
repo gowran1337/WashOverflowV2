@@ -12,7 +12,13 @@ namespace WashOverflowV2.Pages
 			_logger = logger;
 		}
 
-		public void OnGet()
+
+        public IActionResult OnPostBookPage()
+        {
+            return RedirectToPage("BookPage"); // Redirects to NextPage.cshtml
+        }
+
+        public void OnGet()
 		{
 
 		}

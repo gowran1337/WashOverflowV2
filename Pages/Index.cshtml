@@ -1,15 +1,32 @@
 ﻿@page
 @model IndexModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+
 @{
     ViewData["Title"] = "Home page";
 }
 
+
+@if (SignInManager.IsSignedIn(User))
+{ //visa logout button
+    <h1>Welcome, @User.Identity.Name!</h1>
+    <h3>Bookings</h3>
+    <form method="post">
+        <button type="submit" asp-page-handler = "BookPage">Book a wash </button>
+    </form>
+}
+else
+{
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>Hello from Glafira!!!</p>
-    <h1>salam from goran</h1>
-    <p>ricky riiich aram mafia</p>
-    <p>testtest</p>
-    <h1>hejsasn :)</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    
+    <p>Please login to use our services.</p>
 </div>
+    
+}
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
