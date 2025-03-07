@@ -23,12 +23,12 @@ namespace WashOverflowV2.Pages
         {
             Stations = _context.Stations.ToList();
         }
+
+        public IActionResult OnPostBookPage()
+        {
+            return RedirectToPage("BookPage"); // Redirects to BookPage.cshtml
+        }
     }
 
-        //public IActionResult OnPostBookPage()
-        //{
-        //    RedirectToPage  return ("BookPage"); // Redirects to NextPage.cshtml
-        //}
-
-	}
+}
 
