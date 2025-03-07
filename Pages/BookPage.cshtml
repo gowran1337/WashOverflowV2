@@ -1,0 +1,101 @@
+﻿@page
+@model WashOverflowV2.Pages.BookPageModel
+@{
+}
+
+
+
+<h2 id="BookingHead">Service Booking Form</h2>
+<form class="booking-form">
+    <label for="location">Location:</label>
+    <select id="location" name="location" required>
+        <option value="new-york">New York</option>
+        <option value="los-angeles">Los Angeles</option>
+        <option value="chicago">Chicago</option>
+        <option value="houston">Houston</option>
+    </select>
+
+    <label for="month">Month:</label>
+    <select id="month" name="month" required>
+        <option value="january">January</option>
+        <option value="february">February</option>
+        <option value="march">March</option>
+        <option value="april">April</option>
+        <option value="may">May</option>
+        <option value="june">June</option>
+        <option value="july">July</option>
+        <option value="august">August</option>
+        <option value="september">September</option>
+        <option value="october">October</option>
+        <option value="november">November</option>
+        <option value="december">December</option>
+    </select>
+
+    <label for="day">Day:</label>
+    <select id="day" name="day" required>
+        <!-- Generate options for days 1 to 31 -->
+        <script>
+            for (let i = 1; i <= 31; i++) {
+                document.write('<option value="' + i + '">' + i + '</option>');
+            }
+        </script>
+    </select>
+
+    <label for="time">Time of Day:</label>
+    <select id="time" name="time" required>
+        <!-- Generate options for times in 15-minute intervals from 08:00 to 22:00 -->
+        <script>
+            const startHour = 8;
+            const endHour = 22;
+            for (let hour = startHour; hour < endHour; hour++) {
+                for (let minutes = 0; minutes < 60; minutes += 15) {
+                    const time = `${String(hour).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+                    document.write('<option value="' + time + '">' + time + '</option>');
+                }
+            }
+            document.write('<option value="22:00">22:00</option>'); // Add the last time slot
+        </script>
+    </select>
+
+    <label for="package">Package:</label>
+    <select id="package" name="package" required>
+        <option value="basic">Basic</option>
+        <option value="standard">Standard</option>
+        <option value="premium">Premium</option>
+        <option value="deluxe">Deluxe</option>
+    </select>
+
+    <input type="submit" value="Book Now">
+</form>
+
+
+
+
+<style>
+    .booking-form {
+        max-width: 600px;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+    }
+
+        .booking-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .booking-form select,
+        .booking-form input[type="submit"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        #BookingHead{
+            			text-align: center;
+        }
+</style>

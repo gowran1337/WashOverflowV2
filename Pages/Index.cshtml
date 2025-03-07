@@ -1,11 +1,30 @@
 ﻿@page
+@model IndexModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+
 @model WashOverflowV2.Pages.IndexModel
 @{
     ViewData["Title"] = "Home page";
 }
 
+
+@if (SignInManager.IsSignedIn(User))
+{ //visa logout button
+    <h1>Welcome, @User.Identity.Name!</h1>
+    <h3>Bookings</h3>
+    <form method="post">
+        <button type="submit" asp-page-handler = "BookPage">Book a wash </button>
+    </form>
+}
+else
+{
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
+    
+    <p>Please login to use our services.</p>
 </div>
 
 <div class="container">
@@ -24,3 +43,8 @@
         }
     </div>
 </div>
+    
+}
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -24,4 +24,11 @@ namespace WashOverflowV2.Pages
             Stations = _context.Stations.ToList();
         }
     }
+
+        public IActionResult OnPostBookPage()
+        {
+            return RedirectToPage("BookPage"); // Redirects to NextPage.cshtml
+        }
+
+	}
 }
