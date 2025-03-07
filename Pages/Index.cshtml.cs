@@ -25,10 +25,10 @@ namespace WashOverflowV2.Pages
         }
     }
 
-        public IActionResult OnPostBookPage()
-        {
-            return RedirectToPage("BookPage"); // Redirects to NextPage.cshtml
-        }
+        //public IActionResult OnPostBookPage()
+        //{
+        //    RedirectToPage  return ("BookPage"); // Redirects to NextPage.cshtml
+        //}
 
 	}
-}
+
