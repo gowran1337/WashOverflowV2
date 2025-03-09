@@ -15,9 +15,12 @@ namespace WashOverflowV2.Pages
 
         public IActionResult OnPostBookPage()
         {
-            return RedirectToPage("BookPage"); // Redirects to NextPage.cshtml
+            return RedirectToPage("BookPage"); // Redirects to Bookpage.cshtml
         }
-
+        public IActionResult OnPostMyBookingsPage()
+        {
+            return RedirectToPage("MyBookingsPage"); // Redirects to NextPage.cshtml
+        }
         public void OnGet()
 		{
 

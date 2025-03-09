@@ -94,7 +94,8 @@ namespace WashOverflowV2.Pages
                 _context.Bookings.Add(Booking); //adds it to database
                 await _context.SaveChangesAsync();//saves database
 
-                return RedirectToPage("/Index");//return to index page
+                TempData["SuccessMessage"] = "Your booking was successful!"; //prints success message
+                return RedirectToPage("MyBookingsPage");//return to Mybookings page
             }
             catch (Exception ex)
             {
@@ -105,6 +106,7 @@ namespace WashOverflowV2.Pages
             }
 
         }
+        
 
     }
 }

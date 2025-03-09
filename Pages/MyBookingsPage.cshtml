@@ -1,4 +1,122 @@
 ﻿@page
-@model WashOverflowV2.Pages.MyBookingsPageModel
+@model WashOverflowV2.Pages.MyBookingsModel
 @{
 }
+<h2>My Bookings</h2>
+
+@if (Model.UserBookings.Any())
+{
+    <table class="booking-table">
+        <thead>
+            <tr> 
+                <th>Station</th>
+                <th>Package</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var booking in Model.UserBookings) //loops through the bookings and displays them in a table
+            {
+                <tr>
+                    <td>@booking.Station.Name</td>
+                    <td>@booking.Package.Name</td>
+                    <td>@booking.Date.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td>
+                        <form method="post" asp-page-handler="Delete">
+                            <input type="hidden" name="bookingId" value="@booking.Id" /> @*passes the ID of the booking to the .cs file*@
+                            <button type="submit" class="delete-button" 
+                            onclick="return confirm('Are you sure you want to delete this booking?');">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No bookings found.</p>
+}
+@if (TempData["SuccessMessage"] != null) //popupwindow for success message
+{
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>@TempData["SuccessMessage"]</p>
+        </div>
+    </div>
+
+    <script> 
+        window.onload = function () {
+            document.getElementById('successModal').style.display = 'block';
+        };
+
+        document.querySelector('.close').onclick = function () {
+            document.getElementById('successModal').style.display = 'none';
+        };
+    </script>
+
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%;
+            text-align: center;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>//css for popup window
+}
+<style>
+    .delete-button {
+        background-color: red;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+        .delete-button:hover {
+            background-color: darkred;
+        }
+</style> 
+<style>
+    .booking-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+        .booking-table th, .booking-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .booking-table th {
+            background-color: #f4f4f4;
+        }
+</style>
