@@ -16,20 +16,26 @@ namespace WashOverflowV2.Pages
             _context = context;
         }
 
-        public Station Station { get; set; }
+        public Station? Station { get; set; }
+        public List<Package> AvailablePackages { get; set; }
 
         public IActionResult OnGet(int id)
         {
             Station = _context.Stations
-                .Include(s => s.Packages)
-                .ThenInclude(p => p.PackageFeatures)
-                .ThenInclude(pf => pf.Feature)
+                .Include(s => s.Bookings)
+                .ThenInclude(p => p.Package)
                 .FirstOrDefault(s => s.Id == id);
 
             if (Station == null)
             {
                 return NotFound();
             }
+
+            AvailablePackages = Station.Bookings
+                .Select(b => b.Package)
+                .Distinct()
+                .ToList();
+
 
             return Page();
         }

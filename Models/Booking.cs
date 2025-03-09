@@ -1,4 +1,5 @@
-﻿using static System.Collections.Specialized.BitVector32;
+﻿using Microsoft.AspNetCore.Identity;
+using static System.Collections.Specialized.BitVector32;
 
 namespace WashOverflowV2.Models
 {
@@ -10,7 +11,7 @@ namespace WashOverflowV2.Models
         public int StationId { get; set; }
         public DateTime Date { get; set; }
 
-        public User User { get; set; } = null!;
+        public IdentityUser User { get; set; } = null!;
         public Package Package { get; set; } = null!;
         public Station Station { get; set; } = null!;
     }

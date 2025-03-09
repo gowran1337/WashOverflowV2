@@ -1,25 +1,47 @@
 ﻿@page "{id:int}"
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
 @model WashOverflowV2.Pages.DetailsCarwashModel
+
 
 @{
     ViewData["Title"] = "Station Details";
 }
 
-<h2>@Model.Station.Name</h2>
-<p>@Model.Station.Address</p>
+<h2>@Model.Station?.Name</h2>
+<p>@Model.Station?.Address</p>
 
-<h3>Packages</h3>
-<ul>
-    @foreach (var package in Model.Station.Packages)
+<h3>Available Packages</h3>
+<div class="container">
+    <div class="row justify-content-center">
+        @foreach (var package in Model.AvailablePackages)
+        {
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">@package.Name</h5>
+                        <p class="card-text"><strong>Price: </strong>@package.Price kr</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Visa rätt knapp baserat på inloggningsstatus -->
+<div class="container text-center mt-5">
+    @if (SignInManager.IsSignedIn(User))
     {
-        <li>
-            <strong>@package.Name</strong> - @package.Price kr
-            <ul>
-                @foreach (var feature in package.PackageFeatures.Select(pf => pf.Feature))
-                {
-                    <li>@feature.Name</li>
-                }
-            </ul>
-        </li>
+        <h3>Ready to book your wash?</h3>
+        <a asp-page="/BookPage" class="btn btn-primary btn-lg mt-3">Book a wash</a>
     }
-</ul>
+    else
+    {
+        <h3>You need to log in to book a wash</h3>
+        <a href="/Identity/Account/Login" class="btn btn-primary btn-lg mt-3">Log in to book</a>
+    }
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
