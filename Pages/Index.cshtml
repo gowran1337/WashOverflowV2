@@ -1,10 +1,10 @@
 ﻿@page
-@model IndexModel
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
 
+@model WashOverflowV2.Pages.IndexModel
 @{
     ViewData["Title"] = "Home page";
 }
@@ -27,6 +27,23 @@ else
     <h1 class="display-4">Welcome</h1>
     
     <p>Please login to use our services.</p>
+</div>
+
+<div class="container">
+    <div class="row">
+        @foreach (var station in Model.Stations)
+        {
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">@station.Name</h5>
+                        <p class="card-text">@station.Address</p>
+                        <a href="@Url.Page("/Details", new { id = station.Id })" class="btn btn-primary">More info</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>
     
 }
