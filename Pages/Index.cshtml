@@ -9,6 +9,19 @@
     ViewData["Title"] = "Home page";
 }
 
+<h2>Filtrera stationer efter paket</h2>
+
+<!-- Dropdown-lista för att välja paket -->
+<form method="get">
+    <label for="packageSelect">Välj paket:</label>
+    <select name="SelectedPackageId" asp-for="SelectedPackageId" onchange="this.form.submit()">
+        <option value="">Alla paket</option>
+        @foreach (var package in Model.Packages)
+        {
+            <option value="@package.Id">@package.Name</option>
+        }
+    </select>
+</form>
 
 @if (SignInManager.IsSignedIn(User))
 {
@@ -25,8 +38,7 @@
             <button class="btn btn-primary" type="submit" asp-page-handler="BookPage">Book a wash </button>
         </form>
     }
-
-        <br />
+        <br/>
         <div class="container">
             <div class="row">
                 @foreach (var station in Model.Stations)
