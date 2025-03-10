@@ -93,6 +93,7 @@ namespace WashOverflowV2.Pages
             _context.Bookings.Remove(booking);
             await _context.SaveChangesAsync();
 
+            TempData["SuccessMessage"] = "Booking successfully deleted!";
             return RedirectToPage();
         }
     }

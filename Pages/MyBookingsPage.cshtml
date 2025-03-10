@@ -70,12 +70,14 @@
                     <td>@booking.Date.ToString("yyyy-MM-dd")</td>
                     <td>@booking.Date.ToString("HH:mm")</td>
                     <td>@booking.RegistrationNumber</td>
-                    <td class="d-flex gap-3">
-                        <a asp-page="/EditBooking" asp-route-id="@booking.Id" class="btn btn-warning btn-sm d-inline">Edit</a>
-                        <form method="post" class="d-inline">
-                            <input type="hidden" name="id" value="@booking.Id" />
-                            <button type="submit" asp-page-handler="Delete" class="delete-button btn-sm">Delete</button>
-                        </form>
+                    <td>
+                        <div class="d-flex justify-content-center gap-3">
+                            <a asp-page="/EditBooking" asp-route-id="@booking.Id" class="btn btn-warning btn-sm d-inline">Edit</a>
+                            <form method="post" class="d-inline">
+                                <input type="hidden" name="id" value="@booking.Id" />
+                                <button type="submit" asp-page-handler="Delete" class="delete-button btn-sm">Delete</button>
+                            </form>
+                        </div>
                     </td>
 
                 </tr>
