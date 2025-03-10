@@ -3,12 +3,10 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
-
 @model WashOverflowV2.Pages.IndexModel
 @{
     ViewData["Title"] = "Home page";
 }
-
 
 @if (SignInManager.IsSignedIn(User))
 {
@@ -30,6 +28,21 @@ else
         </div>
     </div>
 }
+
+<div class="my-3">
+    <h2>Filtrera stationer efter paket</h2>
+    <!-- Dropdown-lista för att välja paket -->
+    <form method="get" class="d-flex align-items-center gap-3">
+        <label class="form-label mb-0" for="packageSelect">Välj paket:</label>
+        <select class="form-select w-auto" name="SelectedPackageId" asp-for="SelectedPackageId" onchange="this.form.submit()">
+            <option value="">Alla paket</option>
+            @foreach (var package in Model.Packages)
+            {
+                <option value="@package.Id">@package.Name</option>
+            }
+        </select>
+    </form>
+</div>
 
 <div class="container">
     <div class="row">

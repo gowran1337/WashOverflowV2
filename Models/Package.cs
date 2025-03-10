@@ -1,6 +1,4 @@
-﻿using WashOverflowV2.Migrations;
-
-namespace WashOverflowV2.Models
+﻿namespace WashOverflowV2.Models
 {
     public class Package
     {

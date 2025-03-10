@@ -24,9 +24,28 @@ namespace WashOverflowV2.Pages
         }
 
         public IList<Station> Stations { get; set; }
+        public IList<Package> Packages { get; set; } = new List<Package>();
+
+        [BindProperty(SupportsGet = true)]
+        public int? SelectedPackageId { get; set; } // Paket som användaren valt
+
 
         public async Task<IActionResult> OnGetAsync()
         {
+            // Hämta alla paket för dropdown-listan
+            Packages = _context.Packages.ToList();
+
+            // Om användaren har valt ett paket, filtrera stationerna
+            if (SelectedPackageId.HasValue && SelectedPackageId > 0)
+            {
+                Stations = _context.Stations
+                    .Where(s => s.StationPackages.Any(sp => sp.PackageId == SelectedPackageId))
+                    .ToList();
+            }
+            else
+            {
+                Stations = _context.Stations.ToList(); // Visa alla stationer om inget paket är valt
+            }
             // Redirect admin users to the admin dashboard
             if (_signInManager.IsSignedIn(User))
             {
@@ -37,7 +56,6 @@ namespace WashOverflowV2.Pages
                 }
             }
 
-            Stations = await _context.Stations.ToListAsync();
             return Page();
         }
 
