@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Security.Claims;
 using WashOverflowV2.Data;
 using WashOverflowV2.Models;
 
@@ -33,6 +34,9 @@ namespace WashOverflowV2.Pages
         public int SelectedDay { get; set; }
         [BindProperty]
         public string SelectedTime { get; set; }
+
+        [BindProperty]
+        public string RegistrationNumber { get; set; }
 
         public List<Station> Stations { get; set; } = new List<Station>();
         public List<Package> Packages { get; set; } = new List<Package>();
@@ -74,27 +78,21 @@ namespace WashOverflowV2.Pages
                 DateTime selectedTimeParsed = DateTime.ParseExact(SelectedTime, "HH:mm", System.Globalization.CultureInfo.InvariantCulture);
                 DateTime finalBookingDate = new DateTime(DateTime.Now.Year, monthNumber, SelectedDay, selectedTimeParsed.Hour, selectedTimeParsed.Minute, 0);
 
-                var user = await _UserManager.GetUserAsync(User) as WashOverflowV2.Models.User;
-
-                if (user == null)
-                {
-                    _logger.LogError("User not found or invalid user type.");
-                    ModelState.AddModelError("", "User not found. Please try again.");
-                    return Page();
-                }
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
                 Booking = new Booking // creates the booking based on user input
                 {
-                    User = user,
+                    UserId = userId,
                     StationId = SelectedLocationId,
                     PackageId = SelectedPackageId,
+                    RegistrationNumber = RegistrationNumber,
                     Date = finalBookingDate
                 };
 
                 _context.Bookings.Add(Booking); //adds it to database
                 await _context.SaveChangesAsync();//saves database
 
-                return RedirectToPage("/Index");//return to index page
+                return RedirectToPage("/MyBookingsPage");//return to index page
             }
             catch (Exception ex)
             {

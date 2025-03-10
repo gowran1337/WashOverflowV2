@@ -1,4 +1,87 @@
 ﻿@page
 @model WashOverflowV2.Pages.MyBookingsPageModel
 @{
+    ViewData["Title"] = "My Bookings";
 }
+
+<h1>My Bookings</h1>
+
+<div class="mb-3">
+    <form method="get" class="d-flex gap-3 align-items-end">
+        <div>
+            <label class="form-label">Sort by Date:</label>
+            <select name="sortOrder" class="form-select w-auto" onchange="this.form.submit()">
+                <option value="asc" selected="@(Model.SortOrder == "asc" ? "selected" : null)">Oldest First</option>
+                <option value="desc" selected="@(Model.SortOrder == "desc" ? "selected" : null)">Newest First</option>
+            </select>
+        </div>
+
+        <div>
+            <label class="form-label">Filter by Station:</label>
+            <select name="stationId" class="form-select w-auto" onchange="this.form.submit()">
+                <option value="">All Stations</option>
+                @foreach (var station in Model.Stations)
+                {
+                    <option value="@station.Id" selected="@(Model.SelectedStationId == station.Id ? "selected" : null)">@station.Name</option>
+                }
+            </select>
+        </div>
+
+        <div>
+            <label class="form-label">Filter by Package:</label>
+            <select name="packageId" class="form-select w-auto" onchange="this.form.submit()">
+                <option value="">All Packages</option>
+                @foreach (var package in Model.Packages)
+                {
+                    <option value="@package.Id" selected="@(Model.SelectedPackageId == package.Id ? "selected" : null)">@package.Name</option>
+                }
+            </select>
+        </div>
+
+        <div>
+            <label class="form-label">Filter by Reg Number:</label>
+            <input type="text" name="regNumber" value="@Model.RegNumberFilter" class="form-control w-auto" placeholder="Enter Reg Number" onchange="this.form.submit()" />
+        </div>
+
+        <div>
+            <label class="form-label d-block">&nbsp;</label>
+            <a href="/MyBookingsPage" class="btn btn-secondary">Reset Filters</a>
+        </div>
+    </form>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Station</th>
+            <th>Package</th>
+            <th>Reg Number</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var booking in Model.Bookings)
+        {
+            <tr>
+                <td>@booking.Date.ToString("MM/dd/yyyy")</td>
+                <td>@booking.Date.ToString("HH:mm")</td>
+                <td>@booking.Station?.Name</td>
+                <td>@booking.Package?.Name</td>
+                <td>@booking.RegistrationNumber</td>
+                <td>
+                    <a asp-page="/EditBooking" asp-route-id="@booking.Id" class="btn btn-warning btn-sm">Edit</a>
+                    <form method="post" class="d-inline">
+                        <input type="hidden" name="id" value="@booking.Id" />
+                        <button type="submit" asp-page-handler="Delete" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="d-flex justify-content-center">
+    <a asp-page="/BookPage" class="btn btn-primary mt-3">Book a new wash</a>
+</div>

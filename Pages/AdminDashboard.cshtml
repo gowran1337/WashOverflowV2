@@ -1,0 +1,91 @@
+﻿@page
+@model WashOverflowV2.Pages.AdminDashboardModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<h1>@ViewData["Title"]</h1>
+<h3 class="mb-4">Manage All Bookings</h3>
+
+<div class="mb-3">
+    <div>
+        <form method="get" class="d-flex gap-3">
+            <div>
+                <label class="form-label my-auto mb-2">Sort by Date:</label>
+                <select name="sortOrder" class="form-select w-auto" onchange="this.form.submit()">
+                    <option value="asc" selected="@(Model.SortOrder == "asc" ? "selected" : null)">Oldest First</option>
+                    <option value="desc" selected="@(Model.SortOrder == "desc" ? "selected" : null)">Newest First</option>
+                </select>
+            </div>
+            <div>
+                <label class="form-label my-auto mb-2">Filter by Station:</label>
+                <select name="stationId" class="form-select w-auto" onchange="this.form.submit()">
+                    <option value="">All Stations</option>
+                    @foreach (var station in Model.Stations)
+                    {
+                        <option value="@station.Id" selected="@(Model.SelectedStationId == station.Id ? "selected" : null)">@station.Name</option>
+                    }
+                </select>
+            </div>
+            <div>
+                <label class="form-label">Filter by Package:</label>
+                <select name="packageId" class="form-select w-auto" onchange="this.form.submit()">
+                    <option value="">All Packages</option>
+                    @foreach (var package in Model.Packages)
+                    {
+                        <option value="@package.Id" selected="@(Model.SelectedPackageId == package.Id ? "selected" : null)">@package.Name</option>
+                    }
+                </select>
+            </div>
+            <div>
+                <label class="form-label">Filter by Reg Number:</label>
+                <input type="text" name="regNumber" value="@Model.RegNumberFilter" class="form-control w-auto" placeholder="Enter Reg Number" onchange="this.form.submit()" />
+            </div>
+            <div>
+                <label class="form-label">Filter by Phone Number:</label>
+                <input type="text" name="phoneNumber" value="@Model.PhoneNumberFilter" class="form-control w-auto" placeholder="Enter Phone Number" onchange="this.form.submit()" />
+            </div>
+            <div>
+                <label class="form-label d-block">&nbsp;</label>
+                <a href="/AdminDashboard" class="btn btn-secondary">Reset Filters</a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>User</th>
+            <th>User Phone</th>
+            <th>Station</th>
+            <th>Package</th>
+            <th>Reg Number</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var booking in Model.Bookings)
+        {
+            <tr>
+                <td>@booking.Date.ToString("MM/dd/yyyy")</td>
+                <td>@booking.Date.ToString("HH:mm")</td>
+                <td>@booking.User?.UserName</td>
+                <td>@booking.User?.PhoneNumber</td>
+                <td>@booking.Station?.Name</td>
+                <td>@booking.Package?.Name</td>
+                <td>@booking.RegistrationNumber</td>
+                <td>
+                    <form method="post">
+                        <input type="hidden" name="id" value="@booking.Id" />
+                        <button type="submit" asp-page-handler="Delete" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
