@@ -23,6 +23,8 @@ namespace WashOverflowV2.Pages
             Station = _context.Stations
                 .Include(s => s.StationPackages)
                 .ThenInclude(sp => sp.Package)
+                .ThenInclude(p => p.PackageFeatures) // Inkludera kopplingen till features
+                .ThenInclude(pf => pf.Feature) // Inkludera själva feature-data
                 .FirstOrDefault(s => s.Id == id);
 
             if (Station == null)
