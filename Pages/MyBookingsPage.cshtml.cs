@@ -18,7 +18,7 @@ namespace WashOverflowV2.Pages
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public MyBookingsModel(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public MyBookingsPageModel(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
             _userManager = userManager;
