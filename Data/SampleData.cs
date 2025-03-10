@@ -87,6 +87,50 @@ namespace WashOverflowV2.Data
                 database.SaveChanges();
             }
 
+            //Seed station-package data to database
+            if (!database.StationPackages.Any())
+            {
+                database.StationPackages.AddRange(new List<StationPackage>
+                    {
+                        new StationPackage { StationId = 1, PackageId = 1 },
+                        new StationPackage { StationId = 1, PackageId = 2 },
+                        new StationPackage { StationId = 1, PackageId = 3 },
+
+                        new StationPackage { StationId = 2, PackageId = 2 },
+                        new StationPackage { StationId = 2, PackageId = 3 },
+                        new StationPackage { StationId = 2, PackageId = 4 },
+                        new StationPackage { StationId = 2, PackageId = 5 },
+
+                        new StationPackage { StationId = 3, PackageId = 1 },
+                        new StationPackage { StationId = 3, PackageId = 4 },
+                        new StationPackage { StationId = 3, PackageId = 5 },
+
+                        new StationPackage { StationId = 4, PackageId = 1 },
+                        new StationPackage { StationId = 4, PackageId = 2 },
+                        new StationPackage { StationId = 4, PackageId = 3 },
+                        new StationPackage { StationId = 4, PackageId = 5 },
+
+                        new StationPackage { StationId = 5, PackageId = 3 },
+                        new StationPackage { StationId = 5, PackageId = 2 },
+                        new StationPackage { StationId = 5, PackageId = 4 },
+                        new StationPackage { StationId = 5, PackageId = 5 },
+
+                        new StationPackage {StationId = 6, PackageId = 4 },
+                        new StationPackage {StationId = 6, PackageId = 5 },
+                        new StationPackage {StationId = 6, PackageId = 3 },
+
+                        new StationPackage { StationId = 7, PackageId = 1 },
+                        new StationPackage { StationId = 7, PackageId = 2 },
+                        new StationPackage { StationId = 7, PackageId = 3 },
+
+                        new StationPackage { StationId = 8, PackageId = 2 },
+                        new StationPackage { StationId = 8, PackageId = 3 },
+                        new StationPackage { StationId = 8, PackageId = 4 },
+                        new StationPackage { StationId = 8, PackageId = 5 },
+                    });
+                database.SaveChanges();
+            }
+
             SeedUsers(userManager, roleManager, database).Wait();
         }
 
@@ -130,14 +174,6 @@ namespace WashOverflowV2.Data
                     "user4@test.se"
                 };
 
-            var userRegistrationPlates = new List<string>
-                {
-                    "ABC123",
-                    "XYZ789",
-                    "DEF456",
-                    "LMN321"
-                };
-
             var userPhoneNumbers = new List<string>
                 {
                     "+46701112233",
@@ -161,7 +197,6 @@ namespace WashOverflowV2.Data
                         UserName = email,
                         Email = email,
                         EmailConfirmed = true,
-                        RegistrationNumber = userRegistrationPlates[i],
                         PhoneNumber = userPhoneNumbers[i]
                     };
                     await userManager.CreateAsync(user, userPasswords);
@@ -180,24 +215,24 @@ namespace WashOverflowV2.Data
                 var bookings = new List<Booking>
                     {
                         // Bookings for user1
-                        new Booking { UserId = userIds[0], PackageId = 1, StationId = 1, Date = DateTime.UtcNow.AddDays(2) },
-                        new Booking { UserId = userIds[0], PackageId = 2, StationId = 3, Date = DateTime.UtcNow.AddDays(5) },
-                        new Booking { UserId = userIds[0], PackageId = 3, StationId = 5, Date = DateTime.UtcNow.AddDays(7) },
+                        new Booking { UserId = userIds[0], RegistrationNumber = "ABC123", PackageId = 1, StationId = 1, Date = DateTime.UtcNow.AddDays(2) },
+                        new Booking { UserId = userIds[0],RegistrationNumber = "ABC123", PackageId = 2, StationId = 3, Date = DateTime.UtcNow.AddDays(5) },
+                        new Booking { UserId = userIds[0], RegistrationNumber = "ABC123",PackageId = 3, StationId = 5, Date = DateTime.UtcNow.AddDays(7) },
 
                         // Bookings for user2
-                        new Booking { UserId = userIds[1], PackageId = 2, StationId = 2, Date = DateTime.UtcNow.AddDays(3) },
-                        new Booking { UserId = userIds[1], PackageId = 4, StationId = 4, Date = DateTime.UtcNow.AddDays(6) },
-                        new Booking { UserId = userIds[1], PackageId = 5, StationId = 6, Date = DateTime.UtcNow.AddDays(9) },
+                        new Booking { UserId = userIds[1],RegistrationNumber = "XYZ789", PackageId = 2, StationId = 2, Date = DateTime.UtcNow.AddDays(3) },
+                        new Booking { UserId = userIds[1],RegistrationNumber = "XYZ789", PackageId = 4, StationId = 4, Date = DateTime.UtcNow.AddDays(6) },
+                        new Booking { UserId = userIds[1],RegistrationNumber = "TESLA", PackageId = 5, StationId = 6, Date = DateTime.UtcNow.AddDays(9) },
 
                         // Bookings for user3
-                        new Booking { UserId = userIds[2], PackageId = 3, StationId = 3, Date = DateTime.UtcNow.AddDays(4) },
-                        new Booking { UserId = userIds[2], PackageId = 1, StationId = 1, Date = DateTime.UtcNow.AddDays(8) },
-                        new Booking { UserId = userIds[2], PackageId = 5, StationId = 7, Date = DateTime.UtcNow.AddDays(10) },
+                        new Booking { UserId = userIds[2],RegistrationNumber = "LMN321", PackageId = 3, StationId = 3, Date = DateTime.UtcNow.AddDays(4) },
+                        new Booking { UserId = userIds[2],RegistrationNumber = "LMN321", PackageId = 1, StationId = 1, Date = DateTime.UtcNow.AddDays(8) },
+                        new Booking { UserId = userIds[2],RegistrationNumber = "LMN321", PackageId = 5, StationId = 7, Date = DateTime.UtcNow.AddDays(10) },
 
                         // Bookings for user4
-                        new Booking { UserId = userIds[3], PackageId = 4, StationId = 4, Date = DateTime.UtcNow.AddDays(1) },
-                        new Booking { UserId = userIds[3], PackageId = 2, StationId = 2, Date = DateTime.UtcNow.AddDays(5) },
-                        new Booking { UserId = userIds[3], PackageId = 3, StationId = 8, Date = DateTime.UtcNow.AddDays(7) }
+                        new Booking { UserId = userIds[3],RegistrationNumber = "DEF456", PackageId = 4, StationId = 4, Date = DateTime.UtcNow.AddDays(1) },
+                        new Booking { UserId = userIds[3],RegistrationNumber = "SUPERCAR", PackageId = 2, StationId = 2, Date = DateTime.UtcNow.AddDays(5) },
+                        new Booking { UserId = userIds[3],RegistrationNumber = "SUPERCAR", PackageId = 3, StationId = 8, Date = DateTime.UtcNow.AddDays(7) }
                     };
 
                 database.Bookings.AddRange(bookings);

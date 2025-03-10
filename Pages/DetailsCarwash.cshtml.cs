@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using WashOverflowV2.Data;
 using WashOverflowV2.Models;
 
@@ -16,14 +15,14 @@ namespace WashOverflowV2.Pages
             _context = context;
         }
 
-        public Station Station { get; set; }
+        public Station? Station { get; set; }
+        public List<Package> AvailablePackages { get; set; } = new();
 
         public IActionResult OnGet(int id)
         {
             Station = _context.Stations
-                .Include(s => s.Packages)
-                .ThenInclude(p => p.PackageFeatures)
-                .ThenInclude(pf => pf.Feature)
+                .Include(s => s.StationPackages)
+                .ThenInclude(sp => sp.Package)
                 .FirstOrDefault(s => s.Id == id);
 
             if (Station == null)
@@ -31,7 +30,13 @@ namespace WashOverflowV2.Pages
                 return NotFound();
             }
 
+            AvailablePackages = Station.StationPackages
+                .Select(sp => sp.Package)
+                .Distinct()
+                .ToList();
+
             return Page();
         }
     }
 }
+

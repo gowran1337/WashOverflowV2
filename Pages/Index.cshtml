@@ -11,41 +11,63 @@
 
 
 @if (SignInManager.IsSignedIn(User))
-{ //visa logout button
+{
     <h1>Welcome, @User.Identity.Name!</h1>
-    <h3>Bookings</h3>
-    <form method="post">
-        <button type="submit" asp-page-handler = "BookPage">Book a wash </button>
-    </form>
-    <form method="post">
-        <button type="submit" asp-page-handler="MyBookingsPage">My Bookings </button>
-    </form>
+    if (User.IsInRole("Admin"))
+    {
+        <h3 class="mb-5">All bookings</h3>
+    }
+
+    if (User.IsInRole("User"))
+    {
+        <h3 class="mb-5">My bookings</h3>
+        <form method="post">
+            <button class="btn btn-primary" type="submit" asp-page-handler="BookPage">Book a wash </button>
+        </form>
+    }
+
+        <br />
+        <div class="container">
+            <div class="row">
+                @foreach (var station in Model.Stations)
+                {
+                    <div class="col-md-4">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">@station.Name</h5>
+                                <p class="card-text">@station.Address</p>
+                                <a href="@Url.Page("/DetailsCarwash", new { id = station.Id })" class="btn btn-primary">More info</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
 }
 else
 {
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    
-    <p>Please login to use our services.</p>
-</div>
+    <div class="text-center">
+        <h1 class="display-4">Welcome</h1>
 
-<div class="container">
-    <div class="row">
-        @foreach (var station in Model.Stations)
-        {
-            <div class="col-md-4">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">@station.Name</h5>
-                        <p class="card-text">@station.Address</p>
-                        <a href="@Url.Page("/Details", new { id = station.Id })" class="btn btn-primary">More info</a>
+        <p>Please login to use our services.</p>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            @foreach (var station in Model.Stations)
+            {
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">@station.Name</h5>
+                            <p class="card-text">@station.Address</p>
+                            <a href="@Url.Page("/DetailsCarwash", new { id = station.Id })" class="btn btn-primary">More info</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        }
+            }
+        </div>
     </div>
-</div>
-    
 }
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
