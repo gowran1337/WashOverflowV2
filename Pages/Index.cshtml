@@ -5,7 +5,7 @@
 
 @model WashOverflowV2.Pages.IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Home Page";
 }
 
 @if (SignInManager.IsSignedIn(User))
@@ -29,7 +29,7 @@ else
     </div>
 }
 
-<div class="my-3">
+<div class="my-3 mx-3">
     <h2>Filtrera stationer efter paket</h2>
     <!-- Dropdown-lista för att välja paket -->
     <form method="get" class="d-flex align-items-center gap-3">
@@ -50,7 +50,7 @@ else
         {
             <div class="col-md-4">
                 <div class="card mb-4">
-                    <div class="card-body">
+                    <div class="card-body text-center">
                         <h5 class="card-title">@station.Name</h5>
                         <p class="card-text">@station.Address</p>
                         <a href="@Url.Page("/DetailsCarwash", new { id = station.Id })" class="btn btn-primary">More info</a>

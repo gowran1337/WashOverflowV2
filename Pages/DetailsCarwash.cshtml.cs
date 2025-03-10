@@ -15,6 +15,19 @@ namespace WashOverflowV2.Pages
             _context = context;
         }
 
+        public IReadOnlyDictionary<string, string> FeatureImages { get; } = new Dictionary<string, string>
+        {
+            { "Utvändig tvätt", "exterior-wash.png" },
+            { "Invändig rengöring", "interior-cleaning.png" },
+            { "Vaxning", "waxing.png" },
+            { "Däckglans", "tire-shine.png" },
+            { "Fönsterputs", "window-cleaning.png" },
+            { "Motortvätt", "engine-wash.png" },
+            { "Interiör desinficering", "interior-disinfection.png" },
+            { "Luktsanering", "odor-removal.png" },
+            { "Keramisk beläggning", "ceramic-coating.png" }
+        };
+
         public Station? Station { get; set; }
         public List<Package> AvailablePackages { get; set; } = new();
 

@@ -7,6 +7,7 @@
 @{
     ViewData["Title"] = "Station Details";
 }
+
 <a asp-page="/Index" class="btn btn-primary" style="position: absolute; top: 10px; left: 10px;">
     ← Tillbaka till startsidan
 </a>
@@ -28,10 +29,13 @@
 
                         <!-- Visar features som finns i paketen -->
                         <h6>Ingår i paketet:</h6>
-                        <ul>
+                        <ul class="list-group list-group-flush">
                             @foreach (var feature in package.PackageFeatures.Select(pf => pf.Feature))
                             {
-                                <li>@feature.Name</li>
+                                <li class="list-group-item px-0">
+                                    <img src="~/images/@Model.FeatureImages[feature.Name]" alt="@feature.Name" width="40">
+                                    @feature.Name
+                                </li>
                             }
                         </ul>
                     </div>
