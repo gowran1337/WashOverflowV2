@@ -12,14 +12,14 @@ namespace WashOverflowV2.Data
             {
                 database.Stations.AddRange(new List<Station>
                     {
-                        new Station { Name = "WashOverflow Centrum", Address = "Gustav Adolfs Torg 10, Malmö" },
-                        new Station { Name = "WashOverflow Västra Hamnen", Address = "Dockgatan 5, Malmö" },
-                        new Station { Name = "WashOverflow Rosengård", Address = "Rosengårds Centrum 8, Malmö" },
-                        new Station { Name = "WashOverflow Limhamn", Address = "Limhamnsvägen 32, Malmö" },
-                        new Station { Name = "WashOverflow Hyllie", Address = "Hyllie Boulevard 18, Malmö" },
-                        new Station { Name = "WashOverflow Möllevången", Address = "Bergsgatan 25, Malmö" },
-                        new Station { Name = "WashOverflow Sorgenfri", Address = "Sorgenfrivägen 15, Malmö" },
-                        new Station { Name = "WashOverflow Kirseberg", Address = "Kirsebergstorget 4, Malmö" }
+                        new Station { Name = "Centrum", Address = "Gustav Adolfs Torg 10, Malmö" },
+                        new Station { Name = "Västra Hamnen", Address = "Dockgatan 5, Malmö" },
+                        new Station { Name = "Rosengård", Address = "Rosengårds Centrum 8, Malmö" },
+                        new Station { Name = "Limhamn", Address = "Limhamnsvägen 32, Malmö" },
+                        new Station { Name = "Hyllie", Address = "Hyllie Boulevard 18, Malmö" },
+                        new Station { Name = "Möllevången", Address = "Bergsgatan 25, Malmö" },
+                        new Station { Name = "Sorgenfri", Address = "Sorgenfrivägen 15, Malmö" },
+                        new Station { Name = "Kirseberg", Address = "Kirsebergstorget 4, Malmö" }
                     });
                 database.SaveChanges();
             }
