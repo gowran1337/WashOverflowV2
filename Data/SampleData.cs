@@ -51,7 +51,7 @@ namespace WashOverflowV2.Data
                         new Feature { Name = "Motortvätt" },
                         new Feature { Name = "Interiör desinficering" },
                         new Feature { Name = "Luktsanering" },
-                        new Feature { Name = "Chassitvätt" }
+                        new Feature { Name = "Keramisk beläggning" }
                     });
                 database.SaveChanges();
             }
