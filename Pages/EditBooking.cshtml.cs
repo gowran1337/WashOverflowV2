@@ -28,33 +28,7 @@ namespace WashOverflowV2.Pages
         public List<Station> Stations { get; set; } = new List<Station>();
         public List<Package> Packages { get; set; } = new List<Package>();
         public List<Booking> Bookings { get; set; } = new List<Booking>();
-        public async Task<IActionResult> OnGetAsync(int id)
-        {
-            // Fetch the booking to edit
-            Booking = await _context.Bookings
-                .Include(b => b.Station)
-                .Include(b => b.Package)
-                .FirstOrDefaultAsync(b => b.Id == id);
-
-            if (Booking == null)
-            {
-                return NotFound();
-            }
-
-            // Ensure the current user owns the booking
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (Booking.UserId != userId && !User.IsInRole("Admin"))
-            {
-                return Forbid();
-            }
-
-            // Load stations and packages for dropdowns
-            Stations = await _context.Stations.ToListAsync();
-            Packages = await _context.Packages.ToListAsync();
-
-            return Page();
-        }
-
+      
         public async Task<IActionResult> OnPostAsync()
         {
             Stations = await _context.Stations.ToListAsync();

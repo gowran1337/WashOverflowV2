@@ -37,20 +37,38 @@ namespace WashOverflowV2.Pages
 
         [BindProperty]
         public string RegistrationNumber { get; set; }
-
-
-
-        public List<Package> AvailablePackages { get; set; } = new();
+        
         public List<Station> Stations { get; set; } = new List<Station>();
         public List<Package> Packages { get; set; } = new List<Package>();
 
-        public Station Station { get; set; }
-
         public Booking Booking { get; set; }
 
-        
+
+        public async Task<IActionResult> OnGetPackagesAsync(int stationId)
+        {
+            var station = await _context.Stations
+                .Include(s => s.StationPackages)
+                .ThenInclude(sp => sp.Package)
+                .FirstOrDefaultAsync(s => s.Id == stationId);
+
+            if (station == null)
+            {
+                return NotFound();
+            }
+
+            // Extract available packages
+            var packages = station.StationPackages.Select(sp => new
+            {
+                sp.Package.Id,
+                sp.Package.Name
+            }).ToList();
+
+            return new JsonResult(packages);
+        }
+
         public async Task OnGetAsync()
         {
+
             Stations = await _context.Stations.ToListAsync();
             Packages = await _context.Packages.ToListAsync();
 
@@ -77,8 +95,6 @@ namespace WashOverflowV2.Pages
               
                 return Page();
             }
-          
-
             try
             {
                 //creates a variable for the time and date the user has chosen
