@@ -60,7 +60,7 @@ namespace WashOverflowV2.Pages
             Stations = await _context.Stations.ToListAsync();
             Packages = await _context.Packages.ToListAsync();
 
->>>>>>> main
+
             try
             {
                 // Fetch the existing booking from the database
