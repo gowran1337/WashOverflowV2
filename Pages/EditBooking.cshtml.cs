@@ -27,7 +27,7 @@ namespace WashOverflowV2.Pages
 
         public List<Station> Stations { get; set; } = new List<Station>();
         public List<Package> Packages { get; set; } = new List<Package>();
-        public List <Booking> Bookings { get; set; } = new List<Booking>();
+        public List<Booking> Bookings { get; set; } = new List<Booking>();
         public async Task<IActionResult> OnGetAsync(int id)
         {
             // Fetch the booking to edit
@@ -43,7 +43,7 @@ namespace WashOverflowV2.Pages
 
             // Ensure the current user owns the booking
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (Booking.UserId != userId)
+            if (Booking.UserId != userId && !User.IsInRole("Admin"))
             {
                 return Forbid();
             }
@@ -57,9 +57,10 @@ namespace WashOverflowV2.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
-       
-                Stations = await _context.Stations.ToListAsync();
-                Packages = await _context.Packages.ToListAsync();
+            Stations = await _context.Stations.ToListAsync();
+            Packages = await _context.Packages.ToListAsync();
+
+>>>>>>> main
             try
             {
                 // Fetch the existing booking from the database
@@ -72,7 +73,7 @@ namespace WashOverflowV2.Pages
 
                 // Ensure the current user owns the booking
                 var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                if (existingBooking.UserId != userId)
+                if (existingBooking.UserId != userId && !User.IsInRole("Admin"))
                 {
                     return Forbid();
                 }
@@ -88,7 +89,14 @@ namespace WashOverflowV2.Pages
                 await _context.SaveChangesAsync();
 
                 TempData["SuccessMessage"] = "Booking updated successfully!";
-                return RedirectToPage("/MyBookingsPage");
+                if (User.IsInRole("Admin"))
+                {
+                    return RedirectToPage("/AdminDashboard");
+                }
+                else
+                {
+                    return RedirectToPage("/MyBookingsPage");
+                }
             }
             catch (Exception ex)
             {

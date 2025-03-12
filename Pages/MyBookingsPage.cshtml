@@ -4,9 +4,7 @@
 @{
     ViewData["Title"] = "My Bookings";
 }
-<a asp-page="/Index" class="btn btn-primary" style="position: absolute; top: 10px; left: 10px;">
-    ← Tillbaka till startsidan
-</a>
+
 <h2>My Bookings</h2>
 
 <div class="mb-3">
@@ -96,7 +94,7 @@ else
 }
 
 <div class="d-flex justify-content-center">
-    <a asp-page="/BookPage" class="btn btn-primary mt-3">Book a new wash</a>
+    <a asp-page="/BookPage" class="btn btn-dark mt-3">Book a new wash</a>
 </div>
 @if (TempData["SuccessMessage"] != null) //popupwindow for success message
 {

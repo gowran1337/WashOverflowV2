@@ -8,15 +8,26 @@
     ViewData["Title"] = "Station Details";
 }
 
-<a asp-page="/Index" class="btn btn-primary" style="position: absolute; top: 10px; left: 10px;">
-    ← Tillbaka till startsidan
-</a>
+<div class="px-3 mb-3">
+    <a asp-page="/Index" class="btn btn-outline-dark mb-3">
+        ← Go back to all stations
+    </a>
+    <h2>@Model.Station?.Name</h2>
+    <p>@Model.Station?.Address</p>
+    <div class="mb-3">
+        <iframe width="30%"
+                height="150"
+                style="border:0; border-radius:8px;"
+                loading="lazy"
+                allowfullscreen
+                referrerpolicy="no-referrer-when-downgrade"
+                src="https://www.google.com/maps?q=@Uri.EscapeDataString(Model.Station?.Address)&output=embed">
+        </iframe>
+    </div>
 
-<h2>@Model.Station?.Name</h2>
-<p>@Model.Station?.Address</p>
-
-<!-- Visar paket som finns på stationen -->
-<h3>Available Packages</h3>
+    <!-- Visar paket som finns på stationen -->
+    <h3>Available Packages</h3>
+</div>
 <div class="container">
     <div class="row justify-content-center">
         @foreach (var package in Model.AvailablePackages)
@@ -50,12 +61,12 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <h3>Ready to book your wash?</h3>
-        <a asp-page="/BookPage" class="btn btn-primary btn-lg mt-3">Book a wash</a>
+        <a asp-page="/BookPage" class="btn btn-dark mt-3">Book a wash</a>
     }
     else
     {
         <h3>You need to log in to book a wash</h3>
-        <a href="/Identity/Account/Login" class="btn btn-primary btn-lg mt-3">Log in to book</a>
+        <a href="/Identity/Account/Login" class="btn btn-dark mt-3">Log in to book</a>
     }
 </div>
 

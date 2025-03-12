@@ -13,7 +13,7 @@
     <div class="text-center mb-5">
         <h1 class="text-center">Welcome, @User.Identity.Name!</h1>
         <form method="post" class="mt-4">
-            <button class="btn btn-primary" type="submit" asp-page-handler="BookPage">Book a wash </button>
+            <button class="btn btn-dark" type="submit" asp-page-handler="BookPage">Book a wash </button>
         </form>
     </div>
 }
@@ -21,10 +21,10 @@ else
 {
     <div class="text-center mb-5">
         <h1>Welcome</h1>
-        <h3>Please login to use our services.</h3>
+        <h3>Please login to use our services</h3>
         <div class="d-flex justify-content-center gap-3 mt-4">
-            <a href="~/Identity/Account/Login" class="btn btn-primary">Login</a>
-            <a href="~/Identity/Account/Register" class="btn btn-secondary">Register</a>
+            <a href="~/Identity/Account/Login" class="btn btn-dark">Login</a>
+            <a href="~/Identity/Account/Register" class="btn btn-outline-dark">Register</a>
         </div>
     </div>
 }
@@ -49,11 +49,15 @@ else
         @foreach (var station in Model.Stations)
         {
             <div class="col-md-4">
-                <div class="card mb-4">
+                <div class="card shadow-lg mb-4">
+                    <img src="@Url.Content($"~/images/{station.Id}.jpg")"
+                         class="card-img-top w-100"
+                         alt="@station.Name"
+                         style="height: 120px; object-fit: cover;">
                     <div class="card-body text-center">
                         <h5 class="card-title">@station.Name</h5>
                         <p class="card-text">@station.Address</p>
-                        <a href="@Url.Page("/DetailsCarwash", new { id = station.Id })" class="btn btn-primary">More info</a>
+                        <a href="@Url.Page("/DetailsCarwash", new { id = station.Id })" class="btn btn-dark">More info</a>
                     </div>
                 </div>
             </div>
