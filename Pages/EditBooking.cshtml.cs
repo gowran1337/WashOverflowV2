@@ -57,16 +57,9 @@ namespace WashOverflowV2.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
-            //if (!ModelState.IsValid)
-            //{
-                // Reload stations and packages if validation fails
+       
                 Stations = await _context.Stations.ToListAsync();
                 Packages = await _context.Packages.ToListAsync();
-
-                //Booking = await _context.Bookings.ToListAsync();
-                //return Page();
-            //}
-
             try
             {
                 // Fetch the existing booking from the database
