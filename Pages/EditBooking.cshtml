@@ -36,12 +36,23 @@
 
     <div class="form-group">
         <label for="regNumber">Registration Number:</label>
-        <input id="regNumber" asp-for="Booking.RegistrationNumber" class="form-control" placeholder="Enter Car Registration Number" required />
+        <input id="regNumber" asp-for="Booking.RegistrationNumber" class="form-control"
+               placeholder="Enter Car Registration Number"
+               pattern="[A-Z]{3}[0-9]{3}" title="Enter a valid car registration number (ABC123)" required />
+        <div id="regError" class="custom-error">Enter a valid license plate (e.g., ABC123).</div>
+    </div>
+
+    <!-- Checkbox to enable custom license plate -->
+    <div class="form-group">
+        <label>
+            <input type="checkbox" id="customPlateCheckbox"> Custom license plate
+        </label>
     </div>
 
     <div class="form-group d-flex gap-2">
         <button type="submit" class="btn btn-primary">Update Booking</button>
-        <a asp-page="@(User.IsInRole("Admin") ? "/AdminDashboard" : "/MyBookingsPage")" class="btn btn-secondary d-inline-block">Cancel</a>
+        <a asp-page="@(User.IsInRole("Admin") ? "/AdminDashboard" : "/MyBookingsPage")"
+           class="btn btn-secondary d-inline-block">Cancel</a>
     </div>
 </form>
 
@@ -83,4 +94,44 @@
             .booking-form input[type="submit"]:hover {
                 background-color: #0056b3;
             }
+
+    .custom-error {
+        display: none;
+        color: red;
+        font-size: 14px;
+        margin-top: 5px;
+        background: #ffdddd;
+        padding: 5px;
+        border: 1px solid red;
+        border-radius: 5px;
+    }
 </style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const regInput = document.getElementById("regNumber");
+        const errorBox = document.getElementById("regError");
+        const customPlateCheckbox = document.getElementById("customPlateCheckbox");
+
+        regInput.addEventListener("input", function () {
+            const pattern = /^[A-Z]{3}[0-9]{3}$/;
+            if (!customPlateCheckbox.checked && !pattern.test(regInput.value)) {
+                errorBox.style.display = "block";
+            } else {
+                errorBox.style.display = "none";
+            }
+        });
+
+        customPlateCheckbox.addEventListener("change", function () {
+            if (customPlateCheckbox.checked) {
+                regInput.removeAttribute("pattern");
+                regInput.removeAttribute("title");
+                regInput.classList.remove("invalid");
+                errorBox.style.display = "none";
+            } else {
+                regInput.setAttribute("pattern", "[A-Z]{3}[0-9]{3}");
+                regInput.setAttribute("title", "Enter a valid car registration number (ABC123)");
+            }
+        });
+    });
+</script>

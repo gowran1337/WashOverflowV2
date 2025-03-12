@@ -11,7 +11,7 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <div class="text-center mb-5">
-        <h1 class="text-center">Welcome, @User.Identity.Name!</h1>
+        <h1 class="text-center">Welcome, @(User.Identity.Name.Split('@')[0])!</h1>
         <form method="post" class="mt-4">
             <button class="btn btn-dark" type="submit" asp-page-handler="BookPage">Book a wash </button>
         </form>

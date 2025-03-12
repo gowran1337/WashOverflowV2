@@ -3,21 +3,20 @@
 @{
     ViewData["Title"] = "Book a Service";
 }
-
 <h2>Service Booking Form</h2>
 <form method="post" class="booking-form">
-    <label for="location">Location:</label>
-    <select id="location" name="SelectedLocationId" asp-for="SelectedLocationId" required>
+    <label for="Station">Station:</label>
+    <select id="Station" name="SelectedStationId" asp-for="SelectedStationId" required>
         @if (Model.Stations != null && Model.Stations.Any())
         {
-            @foreach (var location in Model.Stations)
+            @foreach (var Station in Model.Stations)
             {
-                <option value="@location.Id">@location.Name</option>
+                <option value="@Station.Id">@Station.Name</option>
             }
         }
         else
         {
-            <option disabled>No locations available</option>
+            <option disabled>No stations available</option>
         }
 
     </select>
@@ -60,21 +59,24 @@
     </select>
 
     <label for="package">Package:</label>
-    <select id="package" name="SelectedPackageId" asp-for="SelectedPackageId" required>
-        @foreach (var package in Model.Packages)
-        {
-            <option value="@package.Id">@package.Name</option>
-        }
-    </select>
+        <select id="package" name="SelectedPackageId" asp-for="SelectedPackageId" required>
+            @foreach (var package in Model.Packages)
+            {
+                <option value="@package.Id">@package.Name</option>
+            }
+        </select>
 
     <label for="regNumber">Registration Number:</label>
-    <input class="form-control mb-5" type="text" id="regNumber" name="RegistrationNumber" asp-for="RegistrationNumber" placeholder="Enter Car Registration Number" required />
+    <input class="form-control mb-5" type="text" id="regNumber" name="RegistrationNumber"
+		   pattern="[A-Z]{3}[0-9]{3}" asp-for="RegistrationNumber" placeholder="Enter Car Registration Number" required />
+
+    <div id="regError" class="custom-error">Enter a valid licenseplate (e.g., ABC123).</div>
+    <label>
+        <input type="checkbox" id="customPlateCheckbox"> Custom license plate
+    </label>
 
     <input type="submit" value="Book Now">
 </form>
-
-
-
 
 <style>
     .booking-form {
@@ -103,4 +105,43 @@
         #BookingHead{
             			text-align: center;
         }
+
+    .custom-error {
+        display: none;
+        color: red;
+        font-size: 14px;
+        margin-top: 5px;
+        background: #ffdddd;
+        padding: 5px;
+        border: 1px solid red;
+        border-radius: 5px;
+    }
 </style>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const regInput = document.getElementById("regNumber");
+        const errorBox = document.getElementById("regError");
+        const customPlateCheckbox = document.getElementById("customPlateCheckbox");
+
+        regInput.addEventListener("input", function () {
+            const pattern = /^[A-Z]{3}[0-9]{3}$/;
+            if (!customPlateCheckbox.checked && !pattern.test(regInput.value)) {
+                errorBox.style.display = "block";
+            } else {
+                errorBox.style.display = "none";
+            }
+        });
+
+        customPlateCheckbox.addEventListener("change", function () {
+            if (customPlateCheckbox.checked) {
+                regInput.removeAttribute("pattern");
+                regInput.removeAttribute("title");
+                regInput.classList.remove("invalid");
+                errorBox.style.display = "none";
+            } else {
+                regInput.setAttribute("pattern", "[A-Z]{3}[0-9]{3}");
+                regInput.setAttribute("title", "Enter a valid car registration number (ABC123)");
+            }
+        });
+    });
+</script><!--script for validation of reg number-->
