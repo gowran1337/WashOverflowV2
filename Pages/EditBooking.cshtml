@@ -4,56 +4,78 @@
     ViewData["Title"] = "Edit Booking";
 }
 
-<h2>Edit Booking</h2>
-
+<h2>Service Booking Form</h2>
 <form method="post" class="booking-form">
-    <input type="hidden" asp-for="Booking.Id" />
-
-    <div class="form-group">
-        <label for="location">Location:</label>
-        <select id="location" asp-for="Booking.StationId" class="form-control" required>
-            @foreach (var station in Model.Stations)
+    <label for="Station">Station:</label>
+    <select id="Station" name="SelectedStationId" asp-for="SelectedStationId" required>
+        @if (Model.Stations != null && Model.Stations.Any())
+        {
+            @foreach (var Station in Model.Stations)
             {
-                <option value="@station.Id">@station.Name</option>
+                <option value="@Station.Id">@Station.Name</option>
             }
-        </select>
-    </div>
+        }
+        else
+        {
+            <option disabled>No stations available</option>
+        }
 
-    <div class="form-group">
-        <label for="package">Package:</label>
-        <select id="package" asp-for="Booking.PackageId" class="form-control" required>
-            @foreach (var package in Model.Packages)
+    </select>
+
+    <label for="month">Month:</label>
+    <select id="month" name="SelectedMonth" asp-for="SelectedMonth" required>
+        <option value="January">January</option>
+        <option value="February">February</option>
+        <option value="March">March</option>
+        <option value="April">April</option>
+        <option value="May">May</option>
+        <option value="June">June</option>
+        <option value="July">July</option>
+        <option value="August">August</option>
+        <option value="September">September</option>
+        <option value="October">October</option>
+        <option value="November">November</option>
+        <option value="December">December</option>
+    </select>
+
+    <label for="day">Day:</label>
+    <select id="day" name="SelectedDay" asp-for="SelectedDay" required>
+        @for (int i = 1; i <= 31; i++)
+        {
+            <option value="@i">@i</option>
+        }
+    </select>
+
+    <label for="time">Time of Day:</label>
+    <select id="time" name="SelectedTime" asp-for="SelectedTime" required>
+        @for (int hour = 8; hour < 22; hour++)
+        {
+            @for (int minutes = 0; minutes < 60; minutes += 15)
             {
-                <option value="@package.Id">@package.Name</option>
+                var time = $"{hour:D2}:{minutes:D2}";
+                <option value="@time">@time</option>
             }
-        </select>
-    </div>
+        }
+        <option value="22:00">22:00</option>
+    </select>
 
-    <div class="form-group">
-        <label for="date">Date and Time:</label>
-        <input id="date" asp-for="Booking.Date" class="form-control" type="datetime-local" required />
-    </div>
+    <label for="package">Package:</label>
 
-    <div class="form-group">
-        <label for="regNumber">Registration Number:</label>
-        <input id="regNumber" asp-for="Booking.RegistrationNumber" class="form-control"
-               placeholder="Enter Car Registration Number"
-               pattern="[A-Z]{3}[0-9]{3}" title="Enter a valid car registration number (ABC123)" required />
-        <div id="regError" class="custom-error">Enter a valid license plate (e.g., ABC123).</div>
-    </div>
+    <select id="package" name="SelectedPackageId" asp-for="SelectedPackageId" required>
+        <option value="">Select a station first</option>
+    </select>
 
-    <!-- Checkbox to enable custom license plate -->
-    <div class="form-group">
-        <label>
-            <input type="checkbox" id="customPlateCheckbox"> Custom license plate
-        </label>
-    </div>
+    <label for="regNumber">Registration Number:</label>
+    <input class="form-control mb-5" type="text" id="regNumber" name="RegistrationNumber"
+           pattern="[A-Z]{3}[0-9]{3}" asp-for="RegistrationNumber" placeholder="Enter Car Registration Number" required />
 
-    <div class="form-group d-flex gap-2">
-        <button type="submit" class="btn btn-primary">Update Booking</button>
-        <a asp-page="@(User.IsInRole("Admin") ? "/AdminDashboard" : "/MyBookingsPage")"
-           class="btn btn-secondary d-inline-block">Cancel</a>
-    </div>
+    <div id="regError" class="custom-error">Enter a valid licenseplate (e.g., ABC123).</div>
+    <label>
+        <input type="checkbox" id="customPlateCheckbox"> Custom license plate
+    </label>
+
+     
+    <input type="submit" value="Book Now">
 </form>
 
 <style>
@@ -73,8 +95,7 @@
         }
 
         .booking-form select,
-        .booking-form input[type="datetime-local"],
-        .booking-form input[type="text"] {
+        .booking-form input[type="submit"] {
             width: 100%;
             padding: 8px;
             margin-bottom: 20px;
@@ -82,18 +103,9 @@
             border-radius: 5px;
         }
 
-        .booking-form input[type="submit"] {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-            .booking-form input[type="submit"]:hover {
-                background-color: #0056b3;
-            }
+    #BookingHead {
+        text-align: center;
+    }
 
     .custom-error {
         display: none;
@@ -106,7 +118,6 @@
         border-radius: 5px;
     }
 </style>
-
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const regInput = document.getElementById("regNumber");
@@ -134,4 +145,37 @@
             }
         });
     });
-</script>
+</script><!--script for validation of reg number-->
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const stationSelect = document.getElementById("Station");
+        const packageSelect = document.getElementById("package");
+
+        stationSelect.addEventListener("change", function () {
+            const stationId = this.value;
+
+            if (!stationId) {
+                packageSelect.innerHTML = '<option value="">Select a station first</option>';
+                return;
+            }
+
+            fetch(`/BookPage?handler=Packages&stationId=${stationId}`)
+                .then(response => response.json())
+                .then(data => {
+                    packageSelect.innerHTML = '';
+                    if (data.length > 0) {
+                        data.forEach(pkg => {
+                            const option = document.createElement("option");
+                            option.value = pkg.id;
+                            option.textContent = pkg.name;
+                            packageSelect.appendChild(option);
+                        });
+                    } else {
+                        packageSelect.innerHTML = '<option value="">No packages available</option>';
+                    }
+                })
+                .catch(error => console.error("Error fetching packages:", error));
+        });
+    });
+</script><!--script for fetching packages based on selected station-->
