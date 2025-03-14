@@ -40,8 +40,8 @@
     </div>
 
     <div class="form-group d-flex gap-2">
-        <button type="submit" class="btn btn-primary">Update Booking</button>
-        <a asp-page="@(User.IsInRole("Admin") ? "/AdminDashboard" : "/MyBookingsPage")" class="btn btn-secondary d-inline-block">Cancel</a>
+        <button type="submit" class="btn btn-dark">Update Booking</button>
+        <a asp-page="@(User.IsInRole("Admin") ? "/AdminDashboard" : "/MyBookingsPage")" class="btn btn-outline-dark d-inline-block">Cancel</a>
     </div>
 </form>
 

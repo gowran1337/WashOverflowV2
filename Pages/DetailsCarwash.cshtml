@@ -8,56 +8,33 @@
     ViewData["Title"] = "Station Details";
 }
 
-<div class="px-3 mb-3">
+<div class="container px-3 mb-4">
     <a asp-page="/Index" class="btn btn-outline-dark mb-3">
         ← Go back to all stations
     </a>
-    <h2>@Model.Station?.Name</h2>
-    <p>@Model.Station?.Address</p>
-    <div class="mb-3">
-        <iframe width="30%"
-                height="150"
-                style="border:0; border-radius:8px;"
-                loading="lazy"
-                allowfullscreen
-                referrerpolicy="no-referrer-when-downgrade"
-                src="https://www.google.com/maps?q=@Uri.EscapeDataString(Model.Station?.Address)&output=embed">
-        </iframe>
-    </div>
 
-    <!-- Visar paket som finns på stationen -->
-    <h3>Available Packages</h3>
-</div>
-<div class="container">
-    <div class="row justify-content-center">
-        @foreach (var package in Model.AvailablePackages)
-        {
-            <div class="col-md-4">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">@package.Name</h5>
-                        <p class="card-text"><strong>Price: </strong>@package.Price kr</p>
+    <div class="row align-items-center rounded bg-dark my-5">
+        <div class="col-md-6 ps-5 text-light">
+            <h2>@Model.Station?.Name</h2>
+            <p class="mb-3">@Model.Station?.Address</p>
+            <p>+46761234578</p>
+        </div>
 
-                        <!-- Visar features som finns i paketen -->
-                        <h6>Ingår i paketet:</h6>
-                        <ul class="list-group list-group-flush">
-                            @foreach (var feature in package.PackageFeatures.Select(pf => pf.Feature))
-                            {
-                                <li class="list-group-item px-0">
-                                    <img src="~/images/@Model.FeatureImages[feature.Name]" alt="@feature.Name" width="40">
-                                    @feature.Name
-                                </li>
-                            }
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        }
+        <div class="col-md-6 text-md-end text-center px-0">
+            <iframe width="100%"
+                    height="200"
+                    style="border:0; border-radius:0 4px 4px 0; margin-bottom: -6px"
+                    loading="lazy"
+                    allowfullscreen
+                    referrerpolicy="no-referrer-when-downgrade"
+                    src="https://www.google.com/maps?q=@Uri.EscapeDataString(Model.Station?.Address)&output=embed">
+            </iframe>
+        </div>
     </div>
 </div>
 
 <!-- Visa rätt knapp baserat på inloggningsstatus -->
-<div class="container text-center mt-5">
+<div class="container text-center my-5">
     @if (SignInManager.IsSignedIn(User))
     {
         <h3>Ready to book your wash?</h3>
@@ -69,6 +46,50 @@
         <a href="/Identity/Account/Login" class="btn btn-dark mt-3">Log in to book</a>
     }
 </div>
+
+<div class="container">
+    <!-- Visar paket som finns på stationen -->
+    <h3 class="mb-4">Available Packages</h3>
+    @{
+        var sortedPackages = Model.AvailablePackages
+        .OrderByDescending(p => p.PackageFeatures.Count)
+        .ToList();
+    }
+
+    <div class="row justify-content-center">
+        @foreach (var package in sortedPackages)
+        {
+            <div class="col-md-4 d-flex">
+                <div class="card shadow mb-4 px-4 w-100 d-flex flex-column">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-titlem logo">@package.Name</h5>
+                        <p class="card-text fw-bold"><strong>Price: </strong>@package.Price kr</p>
+
+                        @* <h6>Ingår i paketet:</h6> *@
+                        <div class="row flex-grow-1">
+                            @foreach (var featureChunk in package.PackageFeatures.Select(pf => pf.Feature).Chunk(5))
+                            {
+                                <div class="col-md-6">
+                                    <ul class="list-group list-group-flush">
+                                        @foreach (var feature in featureChunk)
+                                        {
+                                            <li class="list-group-item px-0 d-flex align-items-center">
+                                                <img src="~/images/@Model.FeatureImages[feature.Name]" alt="@feature.Name" width="40" class="me-2">
+                                                @feature.Name
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

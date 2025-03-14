@@ -8,40 +8,71 @@
     ViewData["Title"] = "Home Page";
 }
 
-@if (SignInManager.IsSignedIn(User))
-{
-    <div class="text-center mb-5">
-        <h1 class="text-center">Welcome, @User.Identity.Name!</h1>
-        <form method="post" class="mt-4">
-            <button class="btn btn-dark" type="submit" asp-page-handler="BookPage">Book a wash </button>
-        </form>
-    </div>
-}
-else
-{
-    <div class="text-center mb-5">
-        <h1>Welcome</h1>
-        <h3>Please login to use our services</h3>
-        <div class="d-flex justify-content-center gap-3 mt-4">
-            <a href="~/Identity/Account/Login" class="btn btn-dark">Login</a>
-            <a href="~/Identity/Account/Register" class="btn btn-outline-dark">Register</a>
-        </div>
-    </div>
+@{
+    var backgroundImage = "hero.jpg";
 }
 
+<section class="hero text-white text-center shadow d-flex align-items-center justify-content-center mb-5 rounded"
+         style="
+    background: url('/images/@backgroundImage') center/cover no-repeat;
+    min-height: 30vh;
+    position: relative;">
+
+    <div class="container position-relative z-1">
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <div class="text-center my-5">
+                <h1 class="display-4 fw-bold">Welcome, @User.Identity.Name!</h1>
+                <p class="mt-3 lead mx-auto w-75">
+                    Whether you're looking for a quick exterior wash, a full interior refresh, or advanced detailing,
+                    our professional team is here to make your vehicle look and feel brand new.
+                </p>
+                <p class="fw-bold lead">Fast. Affordable. Professional. Because your car deserves the best.</p>
+                <form method="post" class="mt-4">
+                    <button class="btn btn-light" type="submit" asp-page-handler="BookPage">Book a Wash</button>
+                </form>
+            </div>
+        }
+        else
+        {
+            <div class="text-center my-5 w-75 mx-auto">
+                <h1 class="display-4 fw-bold">Welcome to WashOverflow</h1>
+                <p class="mt-3 lead mx-auto w-75">
+                    Whether you're looking for a quick exterior wash, a full interior refresh, or advanced detailing,
+                    our professional team is here to make your vehicle look and feel brand new.
+                </p>
+                <p class="fw-bold lead">Fast. Affordable. Professional. Because your car deserves the best.</p>
+                <div class="d-flex justify-content-center gap-3 mt-4">
+                    <a href="~/Identity/Account/Login" class="btn btn-light">Login</a>
+                    <a href="~/Identity/Account/Register" class="btn btn-outline-light">Register</a>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+
 <div class="my-3 mx-3">
-    <h2>Filtrera stationer efter paket</h2>
+    <h2 class="text-center mb-5">Our carwash stations</h2>
     <!-- Dropdown-lista för att välja paket -->
-    <form method="get" class="d-flex align-items-center gap-3">
-        <label class="form-label mb-0" for="packageSelect">Välj paket:</label>
-        <select class="form-select w-auto" name="SelectedPackageId" asp-for="SelectedPackageId" onchange="this.form.submit()">
-            <option value="">Alla paket</option>
-            @foreach (var package in Model.Packages)
-            {
-                <option value="@package.Id">@package.Name</option>
-            }
-        </select>
+    <form method="get" class="d-flex align-items-center gap-3" id="packageForm">
+        <label class="form-label mb-0" for="packageSelect">Filter by package:</label>
+        <input type="hidden" name="SelectedPackageId" id="selectedPackageInput">
+
+        <div class="dropdown">
+            <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" id="dropdownMenuButton">
+                Alla paket
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item package-option" data-value="">Alla paket</a></li>
+                @foreach (var package in Model.Packages)
+                {
+                    <li><a class="dropdown-item package-option" data-value="@package.Id">@package.Name</a></li>
+                }
+            </ul>
+        </div>
     </form>
+
 </div>
 
 <div class="container">
@@ -49,13 +80,13 @@ else
         @foreach (var station in Model.Stations)
         {
             <div class="col-md-4">
-                <div class="card shadow-lg mb-4">
+                <div class="card shadow mb-4">
                     <img src="@Url.Content($"~/images/{station.Id}.jpg")"
                          class="card-img-top w-100"
                          alt="@station.Name"
                          style="height: 120px; object-fit: cover;">
                     <div class="card-body text-center">
-                        <h5 class="card-title">@station.Name</h5>
+                        <h5 class="card-title logo">@station.Name</h5>
                         <p class="card-text">@station.Address</p>
                         <a href="@Url.Page("/DetailsCarwash", new { id = station.Id })" class="btn btn-dark">More info</a>
                     </div>
@@ -65,6 +96,41 @@ else
     </div>
 </div>
 
+<section class="mx-3 mt-5">
+    <div style="width: 100%; overflow: hidden; height: 300px;">
+        <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1K2q_1ZSX-VoTUTVsMtt_tL27wVqBE9s&ehbc=2E312F&noprof=1"
+                class="w-100"
+                height="600"
+                frameborder="0"
+                style="border:0; margin-top: -50px;">
+        </iframe>
+    </div>
+</section>
+
+<section class="bg-dark text-light py-5 mx-3 mb-5 rounded-bottom">
+    <div class="container px-5 py-5">
+        <div class="row align-items-center">
+            <div class="col-md-7 ps-5">
+                <h2 class="fw-bold">Ge din bil en skinande ren tvätt</h2>
+                <p class="lead">Boka en professionell biltvätt idag och låt oss ta hand om din bil med omsorg och precision.</p>
+            </div>
+            <div class="col-md-5 text-center">
+                <a asp-page="/BookPage" class="btn btn-light btn-lg mt-5 mt-lg-0">Boka en tvätt</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.querySelectorAll('.package-option').forEach(item => {
+            item.addEventListener('click', function() {
+                document.getElementById('selectedPackageInput').value = this.getAttribute('data-value');
+                document.getElementById('dropdownMenuButton').textContent = this.textContent;
+                document.getElementById('packageForm').submit();
+            });
+        });
+    </script>
 }

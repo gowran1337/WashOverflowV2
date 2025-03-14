@@ -8,15 +8,37 @@ html {
   }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
 html {
   position: relative;
   min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    font-family: "Mulish", sans-serif;
+}
+
+.logo {
+    font-family: "Permanent Marker", cursive;
+    font-weight: 400;
+    font-style: normal;
+    color: #212529;
+    opacity: 90%;
+    font-size: 26px;
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus, .form-select:focus {
+    border-color: black;
+    box-shadow: none !important;
+}
+.btn-dark:hover, .btn-outline-dark:hover, .btn-light:hover {
+    opacity: 90%;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.dropdown-menu .dropdown-item:hover {
+    background-color: #212529 !important;
+    opacity: 80%;
+    color: white !important;
+    cursor: pointer;
 }

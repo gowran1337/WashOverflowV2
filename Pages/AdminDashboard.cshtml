@@ -47,7 +47,7 @@
             </div>
             <div>
                 <label class="form-label d-block">&nbsp;</label>
-                <a href="/AdminDashboard" class="btn btn-secondary">Reset Filters</a>
+                <a href="/AdminDashboard" class="btn btn-outline-dark">Reset Filters</a>
             </div>
 
         </form>
@@ -81,7 +81,7 @@
                 <td>@booking.RegistrationNumber</td>
                 <td>
                     <div class="d-flex justify-content-center gap-3">
-                        <a asp-page="/EditBooking" asp-route-id="@booking.Id" class="btn btn-warning btn-sm d-inline">Edit</a>
+                        <a asp-page="/EditBooking" asp-route-id="@booking.Id" class="btn btn-outline-dark btn-sm d-inline">Edit</a>
                         <form method="post">
                             <input type="hidden" name="id" value="@booking.Id" />
                             <button type="submit" asp-page-handler="Delete" class="delete-button btn-sm">Delete</button>
