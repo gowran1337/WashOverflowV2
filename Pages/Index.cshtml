@@ -22,7 +22,7 @@
         @if (SignInManager.IsSignedIn(User))
         {
             <div class="text-center my-5">
-                <h1 class="display-4 fw-bold">Welcome, @User.Identity.Name!</h1>
+                <h1 class="text-center">Welcome, @(User.Identity.Name.Split('@')[0])!</h1>
                 <p class="mt-3 lead mx-auto w-75">
                     Whether you're looking for a quick exterior wash, a full interior refresh, or advanced detailing,
                     our professional team is here to make your vehicle look and feel brand new.

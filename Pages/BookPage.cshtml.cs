@@ -25,7 +25,7 @@ namespace WashOverflowV2.Pages
 
 
         [BindProperty]
-        public int SelectedLocationId { get; set; }
+        public int SelectedStationId { get; set; }
         [BindProperty]
         public int SelectedPackageId { get; set; }
         [BindProperty]
@@ -37,16 +37,41 @@ namespace WashOverflowV2.Pages
 
         [BindProperty]
         public string RegistrationNumber { get; set; }
-
+        
         public List<Station> Stations { get; set; } = new List<Station>();
         public List<Package> Packages { get; set; } = new List<Package>();
 
         public Booking Booking { get; set; }
 
+
+        public async Task<IActionResult> OnGetPackagesAsync(int stationId)
+        {
+            var station = await _context.Stations
+                .Include(s => s.StationPackages)
+                .ThenInclude(sp => sp.Package)
+                .FirstOrDefaultAsync(s => s.Id == stationId);
+
+            if (station == null)
+            {
+                return NotFound();
+            }
+
+            // Extract available packages
+            var packages = station.StationPackages.Select(sp => new
+            {
+                sp.Package.Id,
+                sp.Package.Name
+            }).ToList();
+
+            return new JsonResult(packages);
+        }
+
         public async Task OnGetAsync()
         {
+
             Stations = await _context.Stations.ToListAsync();
             Packages = await _context.Packages.ToListAsync();
+
 
             if (Stations == null || !Stations.Any()) //if fail to get station and package data
             {
@@ -57,6 +82,7 @@ namespace WashOverflowV2.Pages
             {
                 ModelState.AddModelError("", "No packages found. Please check your database.");
             }
+
         }
 
 
@@ -69,8 +95,6 @@ namespace WashOverflowV2.Pages
               
                 return Page();
             }
-          
-
             try
             {
                 //creates a variable for the time and date the user has chosen
@@ -83,7 +107,7 @@ namespace WashOverflowV2.Pages
                 Booking = new Booking // creates the booking based on user input
                 {
                     UserId = userId,
-                    StationId = SelectedLocationId,
+                    StationId = SelectedStationId,
                     PackageId = SelectedPackageId,
                     RegistrationNumber = RegistrationNumber,
                     Date = finalBookingDate
