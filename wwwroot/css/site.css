@@ -24,7 +24,7 @@ body {
     font-style: normal;
     color: #212529;
     opacity: 90%;
-    font-size: 26px;
+    font-size: 2rem;
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus, .form-select:focus {
@@ -37,8 +37,6 @@ body {
 }
 
 .dropdown-menu .dropdown-item:hover {
-    background-color: #212529 !important;
-    opacity: 80%;
-    color: white !important;
+    background-color: cadetblue!important;
     cursor: pointer;
 }

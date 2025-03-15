@@ -62,11 +62,12 @@
             <div class="col-md-4 d-flex">
                 <div class="card shadow mb-4 px-4 w-100 d-flex flex-column">
                     <div class="card-body d-flex flex-column">
-                        <h5 class="card-titlem logo">@package.Name</h5>
-                        <p class="card-text fw-bold"><strong>Price: </strong>@package.Price kr</p>
-
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <h5 class="card-titlem fw-bold logo m-0 fs-2">@package.Name</h5>
+                            <p class="card-text fw-bold logo fs-1 m-auto" style="color:cadetblue">@package.Price kr</p>
+                        </div>
                         @* <h6>Ingår i paketet:</h6> *@
-                        <div class="row flex-grow-1">
+                        <div class="row flex-grow-1 justify-content-around">
                             @foreach (var featureChunk in package.PackageFeatures.Select(pf => pf.Feature).Chunk(5))
                             {
                                 <div class="col-md-6">
